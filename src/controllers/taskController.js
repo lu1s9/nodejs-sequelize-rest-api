@@ -1,3 +1,4 @@
+import { Project } from "../models/Project.js";
 import { Task } from "../models/Task.js";
 
 export const getTasks = async (req, res) => {
@@ -27,12 +28,19 @@ export const getTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   const { id } = req.params;
+  const { name, done, projectId } = req.body;
   try {
     const task = await Task.findOne({ where: { id } });
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
-    task.set(req.body);
+    const pid = await Project.findOne({ where: { id: projectId } });
+    if (!pid) {
+      return res.status(404).json({ message: "Project ID not valid" });
+    }
+    task.name = name;
+    task.done = done;
+    task.projectId = projectId;
     task.save();
     res.json(task);
   } catch (error) {
