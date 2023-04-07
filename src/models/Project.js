@@ -1,8 +1,8 @@
-import { sequelize } from "../config/db.js";
-import { DataTypes } from "sequelize";
-import { Task } from "../models/Task.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import Task from './Task.js';
 
-export const Project = sequelize.define("Project", {
+const Project = sequelize.define('Project', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,11 +20,13 @@ export const Project = sequelize.define("Project", {
 });
 
 Project.hasMany(Task, {
-  foreignKey: "projectId",
-  sourceKey: "id",
+  foreignKey: 'projectId',
+  sourceKey: 'id',
 });
 
 Task.belongsTo(Project, {
-  foreignKey: "projectId",
-  targetKey: "id",
+  foreignKey: 'projectId',
+  targetKey: 'id',
 });
+
+export default Project;

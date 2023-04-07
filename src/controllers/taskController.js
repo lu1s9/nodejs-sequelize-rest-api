@@ -1,13 +1,13 @@
-import { Project } from "../models/Project.js";
-import { Task } from "../models/Task.js";
+import Project from '../models/Project.js';
+import Task from '../models/Task.js';
 
 export const getTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll();
     if (tasks.length <= 0) {
-      return res.status(404).json({ message: "No Tasks" });
+      return res.status(404).json({ message: 'No Tasks' });
     }
-    res.json(tasks);
+    return res.json(tasks);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -18,11 +18,11 @@ export const getTask = async (req, res) => {
   try {
     const task = await Task.findByPk(id);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ message: 'Task not found' });
     }
-    res.json(task);
+    return res.json(task);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -32,24 +32,24 @@ export const updateTask = async (req, res) => {
   try {
     const task = await Task.findOne({ where: { id } });
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ message: 'Task not found' });
     }
     const pid = await Project.findOne({ where: { id: projectId } });
     if (!pid) {
-      return res.status(404).json({ message: "Project ID not valid" });
+      return res.status(404).json({ message: 'Project ID not valid' });
     }
     task.name = name;
     task.done = done;
     task.projectId = projectId;
     task.save();
-    res.json(task);
+    return res.json(task);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
 export const deleteTask = async (req, res) => {
-  const { id } = rea.params;
+  const { id } = req.params;
   try {
     const task = await Task.destroy({
       where: {
@@ -57,11 +57,11 @@ export const deleteTask = async (req, res) => {
       },
     });
     if (!task) {
-      res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ message: 'Task not found' });
     }
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
