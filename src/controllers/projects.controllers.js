@@ -24,7 +24,8 @@ export const getProject = async (req, res) => {
   const { id } = req.params;
   try {
     const project = await Project.findOne({ where: { id } });
-    if (!project) return res.status(404).json({ message: 'Project does not exist' });
+    if (!project)
+      return res.status(404).json({ message: 'Project does not exist' });
     return res.json(project);
   } catch (error) {
     return res.status(500).json({ message: error.message });
