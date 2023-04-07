@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    depends_on:
+      postgresDB:
+        condition: service_healthy
+    ports:
+      - 3003:3000
+    environment:
+      - PORT=3000
+      - DB_HOST=postgresDB
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=mysecretpassword
+      - DB_DATABASE=api-rest
+    links:
+      - postgresDB
+  postgresDB:
+    healthcheck:
+      test: 'psql -U postgres'
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=api-rest
