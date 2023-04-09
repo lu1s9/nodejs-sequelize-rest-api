@@ -10,15 +10,16 @@ import {
 
 import validation from '../middlewares/validationMiddleware.js';
 import projectValidator from '../validators/projectValidator.js';
+import tryCatch from '../utils/tryCatch.js';
 
 const router = Router();
 
-router.get('/', getProjects);
-router.get('/:id', getProject);
-router.post('/', validation(projectValidator), createProject);
-router.put('/:id', validation(projectValidator), updateProject);
-router.delete('/:id', deleteProject);
+router.get('/', tryCatch(getProjects));
+router.get('/:id', tryCatch(getProject));
+router.post('/', validation(projectValidator), tryCatch(createProject));
+router.put('/:id', validation(projectValidator), tryCatch(updateProject));
+router.delete('/:id', tryCatch(deleteProject));
 
-router.get('/:id/tasks', getProjectTasks);
+router.get('/:id/tasks', tryCatch(getProjectTasks));
 
 export default router;
