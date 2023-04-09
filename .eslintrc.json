@@ -12,6 +12,7 @@
   },
   "rules": {
     // "quotes": "error"
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "no-unused-vars": "warn"
   }
 }
